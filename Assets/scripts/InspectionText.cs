@@ -24,8 +24,8 @@ public class InspectionText : MonoBehaviour {
                 text += (card as Unit).getAttack()[0] + "-" + (card as Unit).getAttack()[1];
                 text += "\nSkills:\n";
                 ArrayList skills = new ArrayList((card as Unit).getSkills());
-                foreach(string skill in skills) {
-                    text += skill + "\n";
+                foreach(Card.Skills skill in skills) {
+                    text += skill.ToString() + "\n";
                 }
             } else if(card.isSpell()) {
                 text += (card as Spell).getName();

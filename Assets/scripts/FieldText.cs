@@ -21,8 +21,8 @@ public class FieldText : MonoBehaviour {
 			text += (card as Unit).getAttack()[0] + "-" + (card as Unit).getAttack()[1];
 			text += "\nSkills: ";
 			ArrayList skills = new ArrayList((card as Unit).getSkills());
-			foreach(string skill in skills) {
-				text += skill + ",\n";
+			foreach(Card.Skills skill in skills) {
+				text += skill.ToString() + ",\n";
 			}
             //Remove final comma and not the last weird char
             text = text.Remove(text.Length - 2, 1);

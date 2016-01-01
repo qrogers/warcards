@@ -8,7 +8,6 @@ public abstract class Unit : Card {
 	protected int maxHealth;
 	protected int level;
 	protected int exp;
-	protected ArrayList skills;
     protected string slot;
 
     public void attackTarget(Unit target) {
@@ -18,15 +17,24 @@ public abstract class Unit : Card {
                 target.retaliateAttack(this);
                 deactivate();
                 mimicClick();
-            } else {
-                print("INVALID_SLOT_TO_ATTACK");
             }
         } else {
             print("UNIT_IS_INACTIVE");
         }
     }
 
+    public void attackEnemy(Enemy enemy) {
+        if(active) {
+            deckController.attackEnemy(Random.Range((int)attack[0], (int)attack[1] + 1));
+        } else {
+            print("UNIT_IS_INACTIVE");
+        }
+    }
+
     public void reciveAttack(int amount) {
+        if(skills.Contains(Skills.Armored)) {
+            amount -= 1;
+        }
         takeDamage(amount);
     }
 
@@ -38,6 +46,19 @@ public abstract class Unit : Card {
         currentHealth -= damage;
         if(currentHealth <= 0) {
             die();
+        }
+    }
+
+    public void startTurn() {
+        activate();
+        if(skills.Contains(Skills.Regeneration)) {
+            heal(1);
+        }
+    }
+
+    protected void heal(int amount) {
+        if(currentHealth < maxHealth) {
+            currentHealth += amount;
         }
     }
 

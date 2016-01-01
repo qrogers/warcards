@@ -6,12 +6,15 @@ public class ClickHandler : MonoBehaviour {
     public GameObject deckHandler;
     public InspectionText inspectionText;
 
+    public GameObject enemy;
+
     private ArrayList listeners = new ArrayList();
     private DeckController deckController;
     private GameObject selected;
 
     void Start() {
         deckController = deckHandler.GetComponent<DeckController>();
+        enemy.GetComponent<Enemy>().EnemyOnClicked += enemyClicked;
     }
 
     public void addClickEventListener(GameObject go) {
@@ -27,6 +30,10 @@ public class ClickHandler : MonoBehaviour {
             //listeners.Remove(item);
             //Has errors?
         }
+    }
+
+    private void enemyClicked(GameObject card, string cardType) {
+        card.GetComponent<Unit>().attackEnemy(enemy);
     }
 
     private void locationResolver(GameObject card, string cardType) {

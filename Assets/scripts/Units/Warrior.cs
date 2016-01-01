@@ -3,8 +3,8 @@ using System.Collections;
 
 public class Warrior : Unit {
 
-	void Awake() {
-		title = "Warrior";
+    override protected void Awake() {
+        base.Awake();
         color = new Color(0.733f, 0.0f, 0.133f);
         manaCost = 0;
         attack = new ArrayList();
@@ -13,10 +13,8 @@ public class Warrior : Unit {
 		maxHealth = 12;
 		currentHealth = maxHealth;
 		skills = new ArrayList();
-		skills.Add("Evasion");
-		skills.Add("Power Hit");
-        skills.Add("Swift");
-	}
+        skills.Add(Skills.Regeneration);
+    }
 
     override public void foeClicked(Unit card) {
         attackTarget(card);

@@ -8,6 +8,7 @@ public class CardDictionary : MonoBehaviour {
     public Rigidbody fireblastPrefab;
     public Rigidbody elitePrefab;
     public Rigidbody tornadoPrefab;
+    public Rigidbody defenderPrefab;
 
     private ArrayList cards = new ArrayList();
 
@@ -17,6 +18,7 @@ public class CardDictionary : MonoBehaviour {
         cards.Add(fireblastPrefab);
         cards.Add(elitePrefab);
         cards.Add(tornadoPrefab);
+        cards.Add(defenderPrefab);
     }
 
     public Rigidbody getCard(string name) {

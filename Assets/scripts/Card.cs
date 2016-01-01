@@ -26,14 +26,20 @@ public class Card : MonoBehaviour {
     protected string title;
     protected bool active = false;
     protected int manaCost;
+    protected ArrayList skills;
 
     public enum Owner { Player, Enemy };
     public enum Zone { PlayerHand, PlayerDeck, PlayerField, PlayerGraveyard, EnemyHand, EnemyDeck, EnemyField, EnemyGraveyard };
+    public enum Skills { Armored, Regeneration, Guarding};
 
     private Owner owner = Owner.Player;
-    private Zone location = Zone.PlayerHand;
+    protected Zone location = Zone.PlayerHand;
 
     protected DeckController deckController;
+
+    virtual protected void Awake() {
+        title = GetType().ToString();
+    }
 
     public void initColor() {
         renderNewColor(color);
@@ -182,7 +188,7 @@ public class Card : MonoBehaviour {
             activate();
         } else if(owner == Owner.Enemy) {
             location = Zone.EnemyHand;
-            //greyOut();
+            greyOut();
         }
         gameObject.GetComponent<MeshRenderer>().shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.On;
     }
@@ -241,5 +247,9 @@ public class Card : MonoBehaviour {
 
     public bool isSpell() {
         return GetType().IsSubclassOf(typeof(Spell));
+    }
+
+    public bool hasSkill(Skills skill) {
+        return skills.Contains(skill);
     }
 }

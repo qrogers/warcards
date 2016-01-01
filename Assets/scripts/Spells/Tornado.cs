@@ -3,8 +3,7 @@ using System.Collections;
 
 public class Tornado : Spell {
 
-    void Awake() {
-        title = "Tornado";
+    override protected void Awake() {
         color = new Color(0.0f, 0.765f, 0.251f);
         manaCost = 0;
         damage.Add(4);

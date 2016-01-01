@@ -3,8 +3,8 @@ using System.Collections;
 
 public class Elite : Unit {
 
-    void Awake() {
-        title = "Elite";
+    override protected void Awake() {
+        base.Awake();
         color = new Color(0.141f, 0.506f, 0.0f);
         manaCost = 1;
         attack = new ArrayList();
@@ -13,6 +13,7 @@ public class Elite : Unit {
         maxHealth = 20;
         currentHealth = maxHealth;
         skills = new ArrayList();
+        skills.Add(Skills.Armored);
     }
 
     override public void foeClicked(Unit card) {

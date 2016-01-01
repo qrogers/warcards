@@ -32,8 +32,8 @@ public class DeckController : MonoBehaviour {
     private Vector3 playerFieldTextPosition = new Vector3(0.5f, 0.25f, 0.0f);
 
     private Vector3 inEnemyHandVector = new Vector3(0.0f, 0.75f, 7.0f);
-    private Vector3 onEnemyFieldVector = new Vector3(0.0f, 0.5f, 1.0f);
-    private Vector3 onEnemyFieldScale = new Vector3(1.0f, 1.0f, 1.0f);
+    //private Vector3 onEnemyFieldVector = new Vector3(0.0f, 0.5f, 1.0f);
+    //private Vector3 onEnemyFieldScale = new Vector3(1.0f, 1.0f, 1.0f);
     private Vector3 enemyFieldTextPosition = new Vector3(0.5f, 0.761f, 0.0f);
 
     private ArrayList playerOccupiedSlots = new ArrayList{false, false, false, false, false};
@@ -101,13 +101,15 @@ public class DeckController : MonoBehaviour {
         }
 
         spawnCard("warrior", Card.Owner.Player, 6);
-        spawnCard("warrior", Card.Owner.Enemy, 6);  
+        spawnCard("warrior", Card.Owner.Enemy, 6);
         spawnCard("archer", Card.Owner.Player, 4);
         spawnCard("archer", Card.Owner.Enemy, 4);
         spawnCard("fireblast", Card.Owner.Player, 4);
         spawnCard("fireblast", Card.Owner.Enemy, 4);
         spawnCard("tornado", Card.Owner.Player, 2);
         spawnCard("tornado", Card.Owner.Enemy, 2);
+        spawnCard("defender", Card.Owner.Player, 2);
+        spawnCard("defender", Card.Owner.Enemy, 2);
         spawnCard("elite", Card.Owner.Player);
         spawnCard("elite", Card.Owner.Enemy);
 
@@ -168,7 +170,13 @@ public class DeckController : MonoBehaviour {
 
     public void startPlayerTurn() {
         playerMana++;
-        activateUnits();
+        //activateUnits();
+        foreach(Rigidbody card in playerField) {
+            //card.gameObject.GetComponent<Card>().activate();
+            if(card.gameObject.GetComponent<Card>().isUnit()) {
+                card.gameObject.GetComponent<Unit>().startTurn();
+            }
+        }
         if(playerHand.Count < MAX_HAND_SIZE) {
             playerDraw();
         }
@@ -176,7 +184,13 @@ public class DeckController : MonoBehaviour {
 
     public void startEnemyTurn() {
         enemyMana++;
-        activateUnits();
+        //activateUnits();
+        foreach(Rigidbody card in enemyField) {
+            //card.gameObject.GetComponent<Card>().activate();
+            if(card.gameObject.GetComponent<Card>().isUnit()) {
+                card.gameObject.GetComponent<Unit>().startTurn();
+            }
+        }
         if(enemyHand.Count < MAX_HAND_SIZE) {
             enemyDraw();
         }
@@ -405,13 +419,49 @@ public class DeckController : MonoBehaviour {
         return new ArrayList();
     }
 
-    public bool validateAttack(Unit card1, Unit card2) {
-        int slot1 = int.Parse(card1.getSlot());
-        int slot2 = int.Parse(card2.getSlot());
-        if(slot1 == slot2 || slot1 - 1 == slot2 || slot1 + 1 == slot2) {
-            return true;
+    public bool validateAttack(Unit attacker, Unit defender) {
+        int attackerSlot = int.Parse(attacker.getSlot());
+        int defenderSlot = int.Parse(defender.getSlot());
+        if(attackerSlot == defenderSlot || attackerSlot - 1 == defenderSlot || attackerSlot + 1 == defenderSlot) {
+            //Guarding skill check
+            Rigidbody left = getUnitInSlot(defender.getOwner(), (defenderSlot - 1).ToString());
+            Rigidbody right = getUnitInSlot(defender.getOwner(), (defenderSlot + 1).ToString());
+            if(left != null && left.GetComponent<Unit>().hasSkill(Card.Skills.Guarding)) {
+                print("UNIT_HAS_GUARDING");
+                return false;
+            } else if(right != null && right.GetComponent<Unit>().hasSkill(Card.Skills.Guarding)) {
+                print("UNIT_HAS_GUARDING");
+                return false;
+            } else {
+                return true;
+            }
+        } else {
+            print("INVALID_SLOT_TO_ATTACK");
+            return false;
         }
-        return false;
+    }
+
+    public void attackEnemy(int amount) {
+        enemyHealth -= amount;
+        if(enemyHealth <= 0) {
+            print("PLAYER_WINS");
+        }
+    }
+
+    public void attackPlayer(int amount) {
+        playerHealth -= amount;
+        if(playerHealth <= 0) {
+            print("ENEMY_WINS");
+        }
+    }
+
+    public Rigidbody getUnitInSlot(Card.Owner owner, string slot) {
+        foreach(Rigidbody unit in getFactionZone(owner, "field")) {
+            if(unit.GetComponent<Unit>().getSlot() == slot) {
+                return unit;
+            }
+        }
+        return null;
     }
 
     public ArrayList getPlayerField() {
