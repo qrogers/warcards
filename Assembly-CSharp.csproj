@@ -50,6 +50,7 @@
      <Compile Include="Assets\scripts\CardDictionary.cs" />
      <Compile Include="Assets\scripts\ClickHandler.cs" />
      <Compile Include="Assets\scripts\ColorUtils.cs" />
+     <Compile Include="Assets\scripts\Commander.cs" />
      <Compile Include="Assets\scripts\DeckController.cs" />
      <Compile Include="Assets\scripts\Deselect.cs" />
      <Compile Include="Assets\scripts\Enemy.cs" />
@@ -57,6 +58,7 @@
      <Compile Include="Assets\scripts\FieldText.cs" />
      <Compile Include="Assets\scripts\InspectionText.cs" />
      <Compile Include="Assets\scripts\PhaseHandler.cs" />
+     <Compile Include="Assets\scripts\Player.cs" />
      <Compile Include="Assets\scripts\Slot.cs" />
      <Compile Include="Assets\scripts\Spell.cs" />
      <Compile Include="Assets\scripts\Spells\Fireblast.cs" />

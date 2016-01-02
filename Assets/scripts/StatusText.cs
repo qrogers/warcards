@@ -8,11 +8,11 @@ public class StatusText : MonoBehaviour {
     void Update() {
             string text = "";
             text += "ENEMY\n";
-            text += "HP: " + deckController.getEnemyHealth().ToString();
+            text += "HP: " + deckController.getEnemy().getHealth().ToString();
             text += "\nMana: " + deckController.getEnemyMana().ToString();
-            text += "\n\n\n\n\n\n\n\n\n\n\n\n";
+            text += "\n\n\n\n\n";
             text += "PLAYER\n";
-            text += "HP: " + deckController.getPlayerHealth().ToString();
+            text += "HP: " + deckController.getPlayer().getHealth().ToString();
             text += "\nMana: " + deckController.getPlayerMana().ToString();
             gameObject.GetComponent<TextMesh>().text = text;
     }

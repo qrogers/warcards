@@ -4,8 +4,6 @@ using System.Collections;
 public class DeckController : MonoBehaviour {
 
     private const int MAX_HAND_SIZE = 7;
-    private const int MAX_PLAYER_HEALTH = 45;
-    private const int MAX_ENEMY_HEALTH = 45;
 
     private ArrayList playerDeck = new ArrayList();
 	private ArrayList fullPlayerDeck = new ArrayList();
@@ -13,8 +11,6 @@ public class DeckController : MonoBehaviour {
 	private ArrayList playerField = new ArrayList();
 	private ArrayList playerGraveyard = new ArrayList();
 
-    private int playerHealth = MAX_PLAYER_HEALTH;
-    private int enemyHealth = MAX_ENEMY_HEALTH;
     private int playerMana = 0;
     private int enemyMana = 0;
 
@@ -64,6 +60,8 @@ public class DeckController : MonoBehaviour {
     public GameObject clickHandler;
     public GameObject phaseHandler;
     public GameObject enemyAI;
+    public GameObject player;
+    public GameObject enemy;
 	public Camera MainCamera;
 
 	void Start() {
@@ -441,18 +439,25 @@ public class DeckController : MonoBehaviour {
         }
     }
 
-    public void attackEnemy(int amount) {
-        enemyHealth -= amount;
-        if(enemyHealth <= 0) {
-            print("PLAYER_WINS");
+    private Commander getCommanderByOwner(Card.Owner owner) {
+        if(owner == Card.Owner.Player) {
+            return player.GetComponent<Player>();
+        } else if(owner == Card.Owner.Enemy) {
+            return enemy.GetComponent<Enemy>();
+        } else {
+            print("OWNER_NOT_FOUND_FOR_COMMANDER");
+            return null;
         }
     }
 
-    public void attackPlayer(int amount) {
-        playerHealth -= amount;
-        if(playerHealth <= 0) {
-            print("ENEMY_WINS");
-        }
+    public bool directAttack(int amount, Commander target) {
+        if(getFactionZone(target.getOwner(), "field").Count == 0) {
+            target.reciveAttack(amount);
+            return true;
+        } else {
+            print("FIELD_NOT_EMPTY");
+            return false;
+        }     
     }
 
     public Rigidbody getUnitInSlot(Card.Owner owner, string slot) {
@@ -462,6 +467,14 @@ public class DeckController : MonoBehaviour {
             }
         }
         return null;
+    }
+
+    public Player getPlayer() {
+        return player.GetComponent<Player>();
+    }
+
+    public Enemy getEnemy() {
+        return enemy.GetComponent<Enemy>();
     }
 
     public ArrayList getPlayerField() {
@@ -478,14 +491,6 @@ public class DeckController : MonoBehaviour {
 
     public ArrayList getEnemyOccupiedSlots() {
         return enemyOccupiedSlots;
-    }
-
-    public int getPlayerHealth() {
-        return playerHealth;
-    }
-
-    public int getEnemyHealth() {
-        return enemyHealth;
     }
 
     public int getPlayerMana() {

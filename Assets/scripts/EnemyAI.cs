@@ -6,7 +6,7 @@ public class EnemyAI : MonoBehaviour {
     public DeckController deckController;
     public PhaseHandler phaseHandler;
 
-    private enum Result { CardPlayed, NoMana, NoCards, PlayFailed, FieldFull};
+    private enum Result { CardPlayed, NoMana, NoCards, PlayFailed, FieldFull, AttackSucessful, AttackFailed};
 
     public void enemyTurn() {
         bool donePlaying = false;
@@ -29,7 +29,18 @@ public class EnemyAI : MonoBehaviour {
             playRandomSpellOfCost(1, randomFromList(deckController.getFactionZone(Card.Owner.Player, "field")).gameObject.GetComponent<Unit>());
         }
         allAttackRandomUnit();
+        if(deckController.getPlayerField().Count == 0) {
+            allAttackPlayer();
+        }
         phaseHandler.progressPhase();
+    }
+
+    private Result allAttackPlayer() {
+        ArrayList enemyField = deckController.getEnemyField();
+        foreach(Rigidbody attacker in enemyField) {
+            attacker.GetComponent<Unit>().directAttack(deckController.getPlayer());
+        }
+        return Result.AttackSucessful;
     }
 
     private Result playRandomSpellOfCost(int cost, Unit target) {
@@ -45,17 +56,6 @@ public class EnemyAI : MonoBehaviour {
         } else {
             return Result.PlayFailed;
         }
-    }
-
-    private ArrayList getSpellsOfCost(int cost) {
-        ArrayList enemyHand = deckController.getEnemyHand();
-        ArrayList spellsOfCost = new ArrayList();
-        foreach(Rigidbody card in enemyHand) {
-            if(card.gameObject.GetComponent<Card>().isSpell() && card.gameObject.GetComponent<Card>().getManaCost() == cost) {
-                spellsOfCost.Add(card);
-            }
-        }
-        return spellsOfCost;
     }
 
     private Result playRandomUnit() {
@@ -91,29 +91,17 @@ public class EnemyAI : MonoBehaviour {
         return Result.FieldFull;
     }
 
-    /*private void fillFieldWithRandomCards() {
-        ArrayList enemyOccupiedSlots = deckController.getEnemyOccupiedSlots();
-        ArrayList enemyField = deckController.getEnemyField();
-        ArrayList enemyHand = deckController.getEnemyHand();
-        while(enemyField.Count < 5 && enemyHand.Count > 0) {
-            ArrayList openSlots = new ArrayList();
-            int index = 0;
-            foreach(bool slotOccupied in enemyOccupiedSlots) {
-                if(!slotOccupied) {
-                    openSlots.Add(index);
-                }
-                index++;
-            }
-            string slot = openSlots[Random.Range(0, openSlots.Count - 1)].ToString();
-            deckController.play(enemyHand[0] as Rigidbody, slot);
-        }
-    }*/
-
-    private bool allAttackRandomUnit() {
+    private Result allAttackRandomUnit() {
         ArrayList enemyField = deckController.getEnemyField();
         ArrayList playerField = deckController.getPlayerField();
         ArrayList attackable = new ArrayList();
-        foreach(Rigidbody attacker in enemyField) {
+        //FIX USING FOREACH ON DYNAMIC LIST, UNITS DIE FROM COUTNERATTACK
+
+        int startCount = enemyField.Count;
+        int i = 0;
+        //Account for attackers dieing and chaning array
+        while(enemyField.Count > 0) {
+            Rigidbody attacker = enemyField[i] as Rigidbody;
             playerField = deckController.getPlayerField();
             attackable = new ArrayList();
             if(playerField.Count > 0) {
@@ -125,11 +113,35 @@ public class EnemyAI : MonoBehaviour {
                 if(attackable.Count > 0) {
                     Rigidbody defender = randomFromList(attackable);
                     attacker.gameObject.GetComponent<Unit>().attackTarget(defender.gameObject.GetComponent<Unit>());
-                    return true;
                 }
             }
+            if(startCount == enemyField.Count) {
+                i++;
+            } else {
+                startCount = enemyField.Count;
+            }
+            //Break when out of targets
+            if(i > enemyField.Count - 1) {
+                break;
+            }
         }
-        return false;
+
+        //foreach(Rigidbody attacker in enemyField) {
+        //    playerField = deckController.getPlayerField();
+        //    attackable = new ArrayList();
+        //    if(playerField.Count > 0) {
+        //        foreach(Rigidbody card in playerField) {
+        //            if(deckController.validateAttack(attacker.gameObject.GetComponent<Unit>(), card.gameObject.GetComponent<Unit>())) {
+        //                attackable.Add(card);
+        //            }
+        //        }
+        //        if(attackable.Count > 0) {
+        //            Rigidbody defender = randomFromList(attackable);
+        //            attacker.gameObject.GetComponent<Unit>().attackTarget(defender.gameObject.GetComponent<Unit>());
+        //        }
+        //    }
+        //}
+        return Result.AttackSucessful;
     }
 
     private void randomUnitAttackRandomUnit() {
@@ -146,6 +158,17 @@ public class EnemyAI : MonoBehaviour {
             Rigidbody defender = randomFromList(attackable);
             attacker.gameObject.GetComponent<Unit>().attackTarget(defender.gameObject.GetComponent<Unit>());
         }
+    }
+
+    private ArrayList getSpellsOfCost(int cost) {
+        ArrayList enemyHand = deckController.getEnemyHand();
+        ArrayList spellsOfCost = new ArrayList();
+        foreach(Rigidbody card in enemyHand) {
+            if(card.gameObject.GetComponent<Card>().isSpell() && card.gameObject.GetComponent<Card>().getManaCost() == cost) {
+                spellsOfCost.Add(card);
+            }
+        }
+        return spellsOfCost;
     }
 
     public static Rigidbody randomFromList(ArrayList list) {

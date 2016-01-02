@@ -252,4 +252,15 @@ public class Card : MonoBehaviour {
     public bool hasSkill(Skills skill) {
         return skills.Contains(skill);
     }
+
+    //public static Owner invertOwner(Owner owner) {
+    //    if(owner == Owner.Player) {
+    //        return Owner.Enemy;
+    //    } else if(owner == Owner.Enemy) {
+    //        return Owner.Player;
+    //    } else {
+    //        print("ERROR_INVERTING_OWNER");
+    //        return Owner.Error;
+    //    }
+    //}
 }

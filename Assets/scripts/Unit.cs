@@ -23,9 +23,14 @@ public abstract class Unit : Card {
         }
     }
 
-    public void attackEnemy(Enemy enemy) {
+    public void directAttack(Commander target) {
         if(active) {
-            deckController.attackEnemy(Random.Range((int)attack[0], (int)attack[1] + 1));
+            if(deckController.directAttack(Random.Range((int)attack[0], (int)attack[1] + 1), target)) {
+                deactivate();
+                mimicClick();
+            } else {
+                print("CANNOT_ATTACK_HAS_UNITS");
+            }
         } else {
             print("UNIT_IS_INACTIVE");
         }

@@ -32,8 +32,12 @@ public class ClickHandler : MonoBehaviour {
         }
     }
 
-    private void enemyClicked(GameObject card, string cardType) {
-        card.GetComponent<Unit>().attackEnemy(enemy);
+    private void enemyClicked(GameObject enemy) {
+        if(selected != null) {
+            if(selected.GetComponent<Card>().getOwner() == Card.Owner.Player) {
+                selected.GetComponent<Unit>().directAttack(enemy.GetComponent<Enemy>());
+            }
+        }
     }
 
     private void locationResolver(GameObject card, string cardType) {
