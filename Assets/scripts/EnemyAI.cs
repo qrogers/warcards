@@ -23,14 +23,14 @@ public class EnemyAI : MonoBehaviour {
             }
         }
         if(deckController.getFactionZone(Card.Owner.Player, "field").Count >= 3) {
-            playRandomSpellOfCost(0, randomFromList(deckController.getFactionZone(Card.Owner.Player, "field")).gameObject.GetComponent<Unit>());
+            //playRandomSpellOfCost(0, randomFromList(deckController.getFactionZone(Card.Owner.Player, "field")).gameObject.GetComponent<Unit>());
         }
         if(deckController.getFactionZone(Card.Owner.Player, "field").Count > 0) {
-            playRandomSpellOfCost(1, randomFromList(deckController.getFactionZone(Card.Owner.Player, "field")).gameObject.GetComponent<Unit>());
+            //playRandomSpellOfCost(1, randomFromList(deckController.getFactionZone(Card.Owner.Player, "field")).gameObject.GetComponent<Unit>());
         }
-        allAttackRandomUnit();
+        //allAttackRandomUnit();
         if(deckController.getPlayerField().Count == 0) {
-            allAttackPlayer();
+            //allAttackPlayer();
         }
         phaseHandler.progressPhase();
     }

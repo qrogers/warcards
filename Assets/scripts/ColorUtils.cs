@@ -13,7 +13,7 @@ public static class ColorUtils {
     }
 
     public static Color dullColor(Color color) {
-        return new Color(color.r * 0.4f, color.g * 0.4f, color.b * 0.4f);
+        return new Color(color.r * 0.2f, color.g * 0.2f, color.b * 0.2f);
     }
 
     public static Color fadeColor(Color color) {

@@ -55,6 +55,7 @@
      <Compile Include="Assets\scripts\Deselect.cs" />
      <Compile Include="Assets\scripts\Enemy.cs" />
      <Compile Include="Assets\scripts\EnemyAI.cs" />
+     <Compile Include="Assets\scripts\FXHandler.cs" />
      <Compile Include="Assets\scripts\FieldText.cs" />
      <Compile Include="Assets\scripts\InspectionText.cs" />
      <Compile Include="Assets\scripts\PhaseHandler.cs" />
@@ -69,7 +70,38 @@
      <Compile Include="Assets\scripts\Units\Defender.cs" />
      <Compile Include="Assets\scripts\Units\Elite.cs" />
      <Compile Include="Assets\scripts\Units\Warrior.cs" />
+     <None Include="Assets\matierials\UnityUI.cginc" />
+     <None Include="Assets\matierials\UnityStandardUtils.cginc" />
+     <None Include="Assets\matierials\UnityBuiltin2xTreeLibrary.cginc" />
+     <None Include="Assets\matierials\UnityMetaPass.cginc" />
+     <None Include="Assets\matierials\Lighting.cginc" />
+     <None Include="Assets\matierials\TerrainSplatmapCommon.cginc" />
+     <None Include="Assets\matierials\SpeedTreeBillboardCommon.cginc" />
+     <None Include="Assets\matierials\HLSLSupport.cginc" />
+     <None Include="Assets\matierials\UnityStandardMeta.cginc" />
+     <None Include="Assets\matierials\UnityStandardShadow.cginc" />
+     <None Include="Assets\matierials\UnityStandardCoreForwardSimple.cginc" />
+     <None Include="Assets\matierials\TerrainEngine.cginc" />
+     <None Include="Assets\matierials\test.shader" />
+     <None Include="Assets\matierials\SpeedTreeVertex.cginc" />
+     <None Include="Assets\matierials\UnityBuiltin3xTreeLibrary.cginc" />
+     <None Include="Assets\matierials\SpeedTreeWind.cginc" />
+     <None Include="Assets\matierials\UnityStandardBRDF.cginc" />
+     <None Include="Assets\matierials\UnityShadowLibrary.cginc" />
+     <None Include="Assets\matierials\UnityStandardCore.cginc" />
+     <None Include="Assets\matierials\Tessellation.cginc" />
+     <None Include="Assets\matierials\SpeedTreeCommon.cginc" />
+     <None Include="Assets\matierials\UnityLightingCommon.cginc" />
+     <None Include="Assets\matierials\UnityStandardCoreForward.cginc" />
+     <None Include="Assets\matierials\AutoLight.cginc" />
+     <None Include="Assets\matierials\UnityShaderVariables.cginc" />
+     <None Include="Assets\matierials\UnityGlobalIllumination.cginc" />
+     <None Include="Assets\matierials\UnityPBSLighting.cginc" />
+     <None Include="Assets\matierials\UnityDeferredLibrary.cginc" />
+     <None Include="Assets\matierials\UnityStandardInput.cginc" />
      <None Include="Assets\matierials\Outlined-Silhouette Only.shader" />
+     <None Include="Assets\matierials\UnityStandardConfig.cginc" />
+     <None Include="Assets\matierials\UnityCG.cginc" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>

@@ -5,6 +5,8 @@ public class DeckController : MonoBehaviour {
 
     private const int MAX_HAND_SIZE = 7;
 
+    //SET GLOBAL VARS FOR CARD SIZE AND SEPERATION
+
     private ArrayList playerDeck = new ArrayList();
 	private ArrayList fullPlayerDeck = new ArrayList();
 	private ArrayList playerHand = new ArrayList();
@@ -136,7 +138,7 @@ public class DeckController : MonoBehaviour {
 
     private void spawnCard(string card,Card.Owner owner, int count=1) {
         for(int i = 1; i <= count; i++) {
-            Rigidbody newCard = (Rigidbody)Instantiate(cardDictionary.GetComponent<CardDictionary>().getCard(card), offScreenVector, new Quaternion());
+            Rigidbody newCard = (Rigidbody)Instantiate(cardDictionary.GetComponent<CardDictionary>().getCard(card), offScreenVector, Quaternion.identity);
             initCard(newCard.gameObject.GetComponent<Card>());
             newCard.gameObject.GetComponent<Card>().setOwner(owner);
             getFactionZone(owner, "fulldeck").Add(newCard);
@@ -422,14 +424,18 @@ public class DeckController : MonoBehaviour {
         int defenderSlot = int.Parse(defender.getSlot());
         if(attackerSlot == defenderSlot || attackerSlot - 1 == defenderSlot || attackerSlot + 1 == defenderSlot) {
             //Guarding skill check
-            Rigidbody left = getUnitInSlot(defender.getOwner(), (defenderSlot - 1).ToString());
-            Rigidbody right = getUnitInSlot(defender.getOwner(), (defenderSlot + 1).ToString());
-            if(left != null && left.GetComponent<Unit>().hasSkill(Card.Skills.Guarding)) {
-                print("UNIT_HAS_GUARDING");
-                return false;
-            } else if(right != null && right.GetComponent<Unit>().hasSkill(Card.Skills.Guarding)) {
-                print("UNIT_HAS_GUARDING");
-                return false;
+            if(!defender.hasSkill(Card.Skills.Guarding)) {
+                Rigidbody left = getUnitInSlot(defender.getOwner(), (defenderSlot - 1).ToString());
+                Rigidbody right = getUnitInSlot(defender.getOwner(), (defenderSlot + 1).ToString());
+                if(left != null && left.GetComponent<Unit>().hasSkill(Card.Skills.Guarding)) {
+                    print("UNIT_HAS_GUARDING");
+                    return false;
+                } else if(right != null && right.GetComponent<Unit>().hasSkill(Card.Skills.Guarding)) {
+                    print("UNIT_HAS_GUARDING");
+                    return false;
+                } else {
+                    return true;
+                }
             } else {
                 return true;
             }

@@ -46,7 +46,8 @@ public class Card : MonoBehaviour {
     }
 
     public void dullColor() {
-        renderNewColor(ColorUtils.fadeColor(ColorUtils.dullColor(color)));
+        //renderNewColor(ColorUtils.fadeColor(ColorUtils.dullColor(color)));
+        renderNewColor(ColorUtils.dullColor(color));
     }
 
     public void greyOut() {
@@ -55,6 +56,7 @@ public class Card : MonoBehaviour {
 
     private void renderNewColor(Color newColor) {
         material = new Material(baseMaterial);
+        print(material.shaderKeywords.IsReadOnly);
         material.color = newColor;
         Material[] outlineMaterial = gameObject.GetComponent<MeshRenderer>().materials;
         outlineMaterial[1] = material;
